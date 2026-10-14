@@ -115,7 +115,7 @@ public class Model1 extends Demo {
         int scale = game.getScale();
 
         projection.identity().perspective((float)Math.toRadians(60), game.getFrameWidth() / (float)game.getFrameHeight(), 1, 25000);
-        basicRenderer.begin(game.getWindowWidth(), game.getWindowHeight(), 0, 0, 0, 1);
+        basicRenderer.begin(game.getFrameWidth(), game.getFrameHeight(), 0, 0, 0, 1);
         basicRenderer.setLightCount(1);
         basicRenderer.setLightPosition(0, 100, 150, 100);
         basicRenderer.setLightColor(0, 2, 2, 2, 1);

@@ -149,7 +149,7 @@ public class Model2 extends Demo {
 
         projection.identity().perspective((float)Math.toRadians(60), game.getFrameWidth() / (float)game.getFrameHeight(), 1, 25000);
         view.identity().lookAt(eye, target, up);
-        basicRenderer.begin(game.getWindowWidth(), game.getWindowHeight(), 0, 0, 0, 1);
+        basicRenderer.begin(game.getFrameWidth(), game.getFrameHeight(), 0, 0, 0, 1);
         basicRenderer.setProjection(projection);
         basicRenderer.setView(view);
         for(int i = 0; i != model.getMeshCount(); i++) {
