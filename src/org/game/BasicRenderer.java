@@ -2,7 +2,7 @@ package org.game;
 
 public class BasicRenderer extends Resource {
 
-    public static final int MAX_LIGHTS = 3;
+    public static final int MAX_LIGHTS = 8;
     public static final int VERTEX_STRIDE = 8;
 
     private Shader shader;
