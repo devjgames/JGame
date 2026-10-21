@@ -216,6 +216,7 @@ public class ModelLoader {
                             part.vertexBuffer.push(vertex.position);
                             part.vertexBuffer.push(vertex.textureCoordinate);
                             part.vertexBuffer.push(vertex.normal);
+                            part.vertexBuffer.push(1, 1, 1, 1);
                         }
                         part.vertexBuffer.end(BufferUsage.STATIC);
 

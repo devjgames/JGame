@@ -2,8 +2,18 @@ package org.game;
 
 public class BasicRenderer extends Resource {
 
+    public static VertexAttribute[] getVertexAttributes() throws Exception {
+        return
+            new VertexAttribute[] {
+                new VertexAttribute("iPosition", 3),
+                new VertexAttribute("iTextureCoordinate", 2),
+                new VertexAttribute("iNormal", 3),
+                new VertexAttribute("iColor", 4)
+            };
+    }
+
     public static final int MAX_LIGHTS = 8;
-    public static final int VERTEX_STRIDE = 8;
+    public static final int VERTEX_STRIDE = 12;
 
     private Shader shader;
     private RenderTarget renderTarget = null;
@@ -15,9 +25,11 @@ public class BasicRenderer extends Resource {
             "in vec3 iPosition;\n" +
             "in vec2 iTextureCoordinate;\n" +
             "in vec3 iNormal;\n" +
+            "in vec4 iColor;\n" +
             "out vec3 vPosition;\n" +
             "out vec2 vTextureCoordinate;\n" +
             "out vec3 vNormal;\n" +
+            "out vec4 vColor;\n" +
             "uniform mat4 uProjection;\n" +
             "uniform mat4 uView;\n" +
             "uniform mat4 uModel;\n" +
@@ -27,12 +39,14 @@ public class BasicRenderer extends Resource {
             "\tvPosition = (uModel * vec4(iPosition, 1.0)).xyz;\n" +
             "\tvTextureCoordinate = iTextureCoordinate;\n" +
             "\tvNormal = normalize((uModelIT * vec4(iNormal, 0.0)).xyz);\n" +
+            "\tvColor = iColor;\n" +
             "}\n",
             "#version 150 core\n" +
             "#define MAX_LIGHTS " + MAX_LIGHTS + "\n" +
             "in vec3 vPosition;\n" +
             "in vec2 vTextureCoordinate;\n" +
             "in vec3 vNormal;\n" +
+            "in vec4 vColor;\n" +
             "uniform vec3 uLightPosition[MAX_LIGHTS];\n" +
             "uniform vec4 uLightColor[MAX_LIGHTS];\n" +
             "uniform float uLightRadius[MAX_LIGHTS];\n" +
@@ -42,17 +56,21 @@ public class BasicRenderer extends Resource {
             "uniform vec4 uEmissiveColor;\n" +
             "uniform sampler2D uTexture;\n" +
             "uniform int uTextureEnabled;\n" +
+            "uniform int uLightingEnabled;\n"+
             "out vec4 oColor1;\n" +
             "out vec4 oColor2;\n" +
             "void main() {\n" +
             "\tvec3 position = vPosition;\n" +
             "\tvec3 normal = normalize(vNormal);\n" +
-            "\tvec4 color = uAmbientColor;\n" +
-            "\tfor(int i = 0; i != uLightCount; i++) {\n" +
-            "\t\tvec3 x = uLightPosition[i] - position;\n" +
-            "\t\tfloat d = clamp(dot(normalize(x), normal), 0.0, 1.0);\n" +
-            "\t\tfloat a = 1.0 - clamp(length(x) / uLightRadius[i], 0.0, 1.0);\n" +
-            "\t\tcolor += a * d * uDiffuseColor * uLightColor[i];\n" +
+            "\tvec4 color = vColor;\n" +
+            "\tif(uLightingEnabled != 0) {\n" +
+            "\t\tcolor = uAmbientColor;\n" +
+            "\t\tfor(int i = 0; i != uLightCount; i++) {\n" +
+            "\t\t\tvec3 x = uLightPosition[i] - position;\n" +
+            "\t\t\tfloat d = clamp(dot(normalize(x), normal), 0.0, 1.0);\n" +
+            "\t\t\tfloat a = 1.0 - clamp(length(x) / uLightRadius[i], 0.0, 1.0);\n" +
+            "\t\t\tcolor += a * d * uDiffuseColor * uLightColor[i];\n" +
+            "\t\t}\n" +
             "\t}\n" +
             "\tif(uTextureEnabled != 0) {\n" +
             "\t\tcolor *= texture(uTexture, vTextureCoordinate);\n" +
@@ -64,11 +82,7 @@ public class BasicRenderer extends Resource {
                 "oColor1",
                 "oColor2"
             },
-            new VertexAttribute[] {
-                new VertexAttribute("iPosition", 3),
-                new VertexAttribute("iTextureCoordinate", 2),
-                new VertexAttribute("iNormal", 3)
-            }
+            getVertexAttributes()
         );
     }
 
@@ -104,6 +118,7 @@ public class BasicRenderer extends Resource {
         setEmissiveColor(0, 0, 0, 0);
         setTexture(null);
         setLightCount(0);
+        setLightingEnabled(true);
         for(int i = 0; i != MAX_LIGHTS; i++) {
             setLightPosition(i, 0, 0, 0);
             setLightColor(i, 1, 1, 1, 1);
@@ -125,6 +140,10 @@ public class BasicRenderer extends Resource {
 
     public void setModelIT(Mat4 modelIT) {
         shader.set("uModelIT", modelIT);
+    }
+
+    public void setLightingEnabled(boolean enabled) {
+        shader.set("uLightingEnabled", enabled);
     }
 
     public void setAmbientColor(float r, float g, float b, float a) {

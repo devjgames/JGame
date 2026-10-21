@@ -104,13 +104,15 @@ public class GFX {
     public static void validate(GeometryType type, int count, VertexAttribute ... attributes) throws Exception {
         int stride = stride(attributes);
 
-        if(type == GeometryType.LINES) {
-            if(count / 2 * 2 != count) {
-                throw new Exception("invalid vertex count");
-            } 
-        } else if(count / 3 * 3 != count) {
-                throw new Exception("invalid vertex count");
-         }
+        if(type != null) {
+            if(type == GeometryType.LINES) {
+                if(count / stride / 2 * stride * 2 != count) {
+                    throw new Exception("invalid vertex count");
+                } 
+            } else if(count / stride / 3 * stride * 3 != count) {
+                    throw new Exception("invalid vertex count");
+            }
+        } 
         if(count / stride * stride != count) {
             throw new Exception("invalid vertex stride");
         }

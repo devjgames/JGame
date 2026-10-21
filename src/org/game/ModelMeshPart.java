@@ -12,7 +12,7 @@ public class ModelMeshPart extends TaggedResource {
     }
 
     public void calcBounds(VertexAttribute ... attributes) throws Exception {
-        vertexBuffer.calcBounds(GeometryType.TRIANGLES, bounds, attributes);
+        vertexBuffer.calcBounds(null, bounds, attributes);
     }
 
     @Override

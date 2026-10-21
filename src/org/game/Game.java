@@ -71,6 +71,10 @@ public class Game {
         resetTimer();
     }
 
+    public long getWindow() {
+        return window;
+    }
+
     public ResourceManager getResources() {
         return resources;
     }
@@ -181,10 +185,19 @@ public class Game {
     }
 
     public void endFrame() {
+        endFrame(null);
+    }
+
+    public void endFrame(UI ui) {
         GFX.checkError("endFrame()");
 
         GLFW.glfwSwapBuffers(window);
-        GLFW.glfwPollEvents();
+
+        if(ui != null) {
+            ui.handleEvents();
+        } else {
+            GLFW.glfwPollEvents();
+        }
 
         double now = System.nanoTime() / 1000000000.0;
 
