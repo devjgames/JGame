@@ -17,10 +17,8 @@ import org.game.Resource;
 import org.game.SpriteRenderer;
 import org.game.Texture;
 import org.game.UI;
-import org.game.UIString;
 
 import java.io.File;
-import java.util.Vector;
 
 public class UI2 extends Demo {
 
@@ -31,18 +29,6 @@ public class UI2 extends Demo {
     private Model model;
     private Mat4 projection = new Mat4();
     private Mat4 view = new Mat4();
-    private Vector<Object> items = new Vector<>();
-    private String[] menu = new String[] {
-        "Add",
-        "Delete",
-        "Clear"
-    };
-    private boolean[] menuOpen = new boolean[1];
-    private int[] selected = new int[1];
-    private float[] menuX = new float[1];
-    private float[] menuY = new float[1];
-    private UIString text;
-    private boolean showAddItem;
     private RenderTarget renderTarget;
     private boolean rotate;
     private boolean x2;
@@ -94,15 +80,6 @@ public class UI2 extends Demo {
 
         view.identity().lookAt(200, 200, 200, 0, 0, 0, 0, 1, 0);
 
-        selected[0] = -1;
-
-        items.clear();
-
-        menuOpen[0] = false;
-
-        text = game.getResources().manage(new UIString(100));
-        showAddItem = false;
-
         renderTarget = null;
 
         x2 = false;
@@ -117,7 +94,7 @@ public class UI2 extends Demo {
         }
 
         int scale = game.getScale();
-        int fw = game.getFrameWidth() - 250 * scale;
+        int fw = game.getFrameWidth();
         int fh = game.getFrameHeight() - 20 * scale;
         int tw = fw;
         int th = fh;
@@ -201,50 +178,6 @@ public class UI2 extends Demo {
                 ui.rowPush(ui.checkboxWidth("X2"));
                 x2 = ui.checkbox("X2", x2);
                 ui.endRow();
-            }
-            ui.endWindow();
-            if(ui.beginWindow("test", game.getWindowWidth() - 250, 30, 250, game.getWindowHeight() - 30, true, stack)) {
-                String item = ui.list("test1", "test2", items, menu, game.getWindowHeight(), menuOpen, 150, 100, selected, menuX, menuY, stack);
-
-                if(showAddItem) {
-                    if(ui.beginPopup("popup", 10, 10, 200, 100, stack)) {
-                        ui.beginRow(20, 2);
-                        ui.rowPush(ui.buttonWidth("Add"));
-                        if(ui.button("Add")) {
-                            String s = text.getText();
-
-                            if(!s.isBlank()) {
-                                items.add(s);
-                            }
-                            selected[0] = -1;
-                            showAddItem = false;
-                        }
-                        ui.rowPush(ui.buttonWidth("Cancel"));
-                        if(ui.button("Cancel")) {
-                            showAddItem = false;
-                        }
-                        ui.endRow();
-                        ui.beginRow(20, 1);
-                        ui.rowPush(150);
-                        ui.edit(text);
-                        ui.endRow();
-                        ui.endPopup();
-                    }
-                    menuOpen[0] = false;
-                }
-
-                if(item != null) {
-                    if(item.equals("Add")) {
-                        showAddItem = true;
-                    } else if(item.equals("Delete")) {
-                        if(selected[0] >= 0 && selected[0] < items.size()) {
-                            items.remove(selected[0]);
-                            selected[0] = -1;
-                        }
-                    } else if(item.equals("Clear")) {
-                        selected[0] = -1;
-                    }
-                }
             }
             ui.endWindow();
         }

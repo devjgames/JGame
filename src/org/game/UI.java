@@ -456,10 +456,6 @@ public class UI extends Resource {
         return nk_check_label(ctx, text, selected);
     }
 
-    public void edit(UIString text) {
-        nk_edit_string(ctx, NK_EDIT_FIELD, text.getEditBuffer(), text.getEditLength(), text.getMaxChars(), text.getFilter());
-    }
-
     public boolean beginPopup(String title, int x, int y, int w, int h, AutoCloseable stack) {
         NkRect r = NkRect.malloc((MemoryStack)stack).set(x, y, w, h);
 
@@ -528,82 +524,7 @@ public class UI extends Resource {
         }
         return hit;
     }
-
-    public String list(String title1, String title2, Vector<Object> items, String[] contextMenu, int height, boolean[] menuOpen, float menuW, float menuH, int[] selected, float[] menuX, float[] menuY, AutoCloseable stack) {
-        NkRect listBounds = NkRect.malloc((MemoryStack)stack);
-        nk_layout_row_dynamic(ctx, height, 1);
-        nk_widget_bounds(ctx, listBounds);
-
-        if (nk_group_begin(ctx, title1, NK_WINDOW_BORDER)) {
-            nk_layout_row_dynamic(ctx, 24, 1);
-            for (int i = 0; i < items.size(); i++) {
-                if (nk_select_label(ctx, items.get(i).toString(), NK_TEXT_LEFT, i == selected[0])) {
-                    selected[0] = i;
-                }
-            }
-            nk_group_end(ctx);
-        }
-
-        NkRect win = NkRect.malloc((MemoryStack)stack);
-
-        nk_window_get_bounds(ctx, win);
-
-        String hit = null;
-
-        if (nk_input_mouse_clicked(ctx.input(), NK_BUTTON_RIGHT, listBounds)) {
-            float mx = ctx.input().mouse().pos().x() - win.x();
-            float my = ctx.input().mouse().pos().y() - win.y();
-            menuX[0] = Math.max(0, Math.min(mx, win.w() - menuW));
-            menuY[0] = (my + menuH > win.h()) ? Math.max(0, my - menuH) : my;  
-            menuOpen[0] = true;
-        }
-
-        if (menuOpen[0]) {
-            NkRect r = NkRect.malloc((MemoryStack)stack).set(menuX[0], menuY[0], menuW, menuH);
-            if (nk_popup_begin(ctx, NK_POPUP_STATIC, title2, NK_WINDOW_NO_SCROLLBAR, r)) {
-                NkStyleButton btn = ctx.style().button();
-                float oldBorder = btn.border();
-                float oldRounding = btn.rounding();
-                int oldAlign = btn.text_alignment();
-                NkColor oldNormal = NkColor.malloc((MemoryStack)stack).set(btn.normal().data().color());
-                NkVec2 oldPadding = NkVec2.malloc((MemoryStack)stack).set(btn.padding());
-                NkColor popupBg = ctx.style().window().fixed_background().data().color();
-
-                btn.border(0f);
-                btn.rounding(0f);
-                btn.text_alignment(NK_TEXT_LEFT);        
-                btn.padding().set(8f, 4f);               
-                btn.normal().data().color().set(popupBg); 
-
-                nk_layout_row_dynamic(ctx, 25, 1);
-                for(String item : contextMenu) {
-                    if(nk_button_label(ctx, item)) {
-                        hit = item;
-                        nk_popup_close(ctx);
-                        menuOpen[0] = false;
-                    }
-                }
-                btn.border(oldBorder);
-                btn.rounding(oldRounding);
-                btn.text_alignment(oldAlign);
-                btn.padding().set(oldPadding);
-                btn.normal().data().color().set(oldNormal);
-
-                nk_popup_end(ctx);
-            } else {
-                menuOpen[0] = false;
-            }
-
-            NkRect abs = NkRect.malloc((MemoryStack)stack).set(win.x() + menuX[0], win.y() + menuY[0], menuW, menuH);
-            if (menuOpen[0]
-                    && nk_input_is_mouse_released(ctx.input(), NK_BUTTON_LEFT)
-                    && !nk_input_is_mouse_hovering_rect(ctx.input(), abs)) {
-                menuOpen[0] = false;
-            }
-        }
-        return hit;
-    }
-
+    
     @Override
     public void destroy() {
         nk_font_atlas_clear(atlas);

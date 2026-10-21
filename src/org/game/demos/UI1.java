@@ -6,7 +6,6 @@ import org.game.GFX;
 import org.game.Game;
 import org.game.Resource;
 import org.game.UI;
-import org.game.UIString;
 
 public class UI1 extends Demo {
 
@@ -20,9 +19,9 @@ public class UI1 extends Demo {
     private int counter;
     private int option;
     private boolean checked;
-    private UIString text;
     private Vector<Object> items = new Vector<>();
     private boolean[] menuOpen = new boolean[1];
+    private String text;
 
     @Override
     public void init(Game game) throws Exception {
@@ -30,18 +29,18 @@ public class UI1 extends Demo {
         counter = 0;
         option = 1;
         checked = false;
-        text = game.getResources().manage(new UIString(25));
 
         items.clear();
         for(int i = 1; i != 16; i++) {
             items.add("Item " + i);
         }
         menuOpen[0] = false;
+        text = "";
     }
 
     @Override
     public void update(Game game) throws Exception {
-        String s;
+        String s = "";
 
         GFX.clear(0.2f, 0.2f, 0.2f, 1);
 
@@ -75,13 +74,10 @@ public class UI1 extends Demo {
                 ui.rowPush(ui.buttonWidth("+"));
                 Integer i;
                 if((i = ui.popup("+", "items", items, 150, 200, menuOpen, false, stack)) != null) {
-                    text.setText(items.get(i).toString());
+                    text = items.get(i).toString();
                 }
-                ui.rowPush(100);
-                ui.edit(text);
-                s = text.getText();
-                ui.rowPush(ui.labelWidth(s));
-                ui.label(s);
+                ui.rowPush(ui.labelWidth(text));
+                ui.label(text);
                 ui.endRow();
             }
             ui.endWindow();
