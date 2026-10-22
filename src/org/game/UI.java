@@ -102,7 +102,28 @@ public class UI {
         visible.add(button);
         button.setSelected(selected);
 
+        maxH = Math.max(maxH, button.h(this));
+
         return button.clicked();
+    }
+
+    public int list(String key, Vector<Object> items, int rows, int cols, int selected, int gap) {
+        UIList list = (UIList)controls.get(key);
+
+        if(list == null) {
+            controls.put(key, list = new UIList(rows, cols));
+        }
+        list.setPosition(x + gap, y);
+        x = x + gap + list.w(this);
+
+        list.setSelected(selected);
+
+        visible.add(list);
+        list.setItems(items);
+
+        maxH = Math.max(maxH, list.h(this));
+
+        return list.getSelected();
     }
 
     public void end(Game game) throws Exception {
@@ -110,10 +131,6 @@ public class UI {
         int y = game.getMouseY();
         boolean hasFocus = false;
 
-        GFX.clear(UIColors.BACKGROUND);
-        GFX.setDepthState(DepthState.NONE);
-        GFX.setBlendState(BlendState.ALPHA);
-        GFX.setCullState(CullState.NONE);
         spriteRenderer.setProjection(game.getFrameWidth(), game.getFrameHeight());
         spriteRenderer.begin(font);
         for(UIControl control : visible) {
@@ -128,6 +145,8 @@ public class UI {
             focus = null;
         }
 
+        boolean wasDown = down;
+
         if(game.isMouseButtonDown(0)) {
             if(!down) {
                 down = true;
@@ -138,15 +157,16 @@ public class UI {
                 }
             }
         } else {
-            if(focus != null) {
+            if(focus != null && down) {
                 focus.mouseUp(this, x, y);
             }
             down = false;
         }
         if(focus != null) {
-            if(down) {
+            if(down && !wasDown) {
                 focus.mouseDown(this, x, y);
             }
+            focus.mouseMoved(this, x, y);
             focus.update(null);
         }
     }

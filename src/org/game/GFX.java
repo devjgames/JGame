@@ -69,7 +69,7 @@ public class GFX {
 
             if(error != GL11.GL_NO_ERROR) {
                 hasError = true;
-                System.out.println(tag + ":" + error);
+                Log.getInstance().put(1, tag + ":" + error);
             }
         }
     }

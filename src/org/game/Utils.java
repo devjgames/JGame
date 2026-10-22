@@ -14,7 +14,7 @@ public class Utils {
             boolean isRelaunched = "true".equals(System.getProperty("macRelaunched"));
 
             if (!isRelaunched) {
-                System.out.println("Mac detected without JVM flag. Restarting on first thread...");
+                Log.getInstance().put(1, "Mac detected without JVM flag. Restarting on first thread...");
                 try {
                     List<String> command = new ArrayList<>();
                     command.add("java");
@@ -33,7 +33,7 @@ public class Utils {
                     try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                         String line;
                         while ((line = reader.readLine()) != null) {
-                            System.out.println(line);
+                            Log.getInstance().put(1, line);
                         }
                     }
                     System.exit(0);
