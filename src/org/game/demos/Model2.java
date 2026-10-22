@@ -101,8 +101,8 @@ public class Model2 extends Demo {
             spriteRenderer.setProjection(w, h);
             spriteRenderer.begin(texture);
             spriteRenderer.push(
-                "click to start", 8, 16, 16, 
-                scale, 0, w / 2 - 16 * 7 * scale, h / 2 - 8 * scale, 
+                "click to start", 16, 10, 12, 
+                scale, 0, w / 2 - 10 * 7 * scale, h / 2 - 6 * scale, 
                 1, 1, 0, 1, 1, 0.5f, 0, 1);
             spriteRenderer.end();
 
@@ -197,7 +197,7 @@ public class Model2 extends Demo {
         spriteRenderer.push(
             "FPS = " + game.getFPS() + "\n" + "RES = " + Resource.getInstances() + "\n" + 
             "POS = " + (int)eye.x + ", " + (int)eye.y + ", " + (int)eye.z, 
-            8, 16, 16, scale, 5, 10 * scale, 10 * scale, 1, 1, 0, 1, 1, 0.5f, 0, 1
+            16, 10, 12, scale, 5, 10 * scale, 10 * scale, 1, 1, 0, 1, 1, 0.5f, 0, 1
         );
         spriteRenderer.end();
     }

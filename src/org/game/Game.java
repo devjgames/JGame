@@ -185,19 +185,10 @@ public class Game {
     }
 
     public void endFrame() {
-        endFrame(null);
-    }
-
-    public void endFrame(UI ui) {
         GFX.checkError("endFrame()");
 
         GLFW.glfwSwapBuffers(window);
-
-        if(ui != null) {
-            ui.handleEvents();
-        } else {
-            GLFW.glfwPollEvents();
-        }
+        GLFW.glfwPollEvents();
 
         double now = System.nanoTime() / 1000000000.0;
 

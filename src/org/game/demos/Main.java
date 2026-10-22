@@ -37,8 +37,7 @@ public class Main {
                 new Shader2(),
                 new Model1(),
                 new Model2(),
-                new UI1(),
-                new UI2()
+                new UI1()
             };
             int iDemo = 0;
             int selDemo = -1;
@@ -60,14 +59,13 @@ public class Main {
                             color1.set(1, 1, 1, 1);
                             color2.set(0, 0, 1, 1);
                         }
-                        spriteRenderer.push(demos[i].toString(), 8, 16, 16, scale, 5, 10 * scale, 10 * scale + (16 + 5) * scale * i, color1, color2);
+                        spriteRenderer.push(demos[i].toString(), 16, 10, 12, scale, 5, 10 * scale, 10 * scale + (16 + 5) * scale * i, color1, color2);
                     }
                     spriteRenderer.end();
-                    game.endFrame();
                 } else {
                     demos[selDemo].update(game);
-                    game.endFrame(demos[selDemo].getUI());
                 }
+                game.endFrame();
                 game.setTitle("Game - FPS = " + game.getFPS());
 
                 if(game.isKeyDown(Keys.KEY_F)) {

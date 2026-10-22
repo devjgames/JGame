@@ -106,7 +106,7 @@ public class Shader1 extends Demo {
         spriteRenderer.begin(texture);
         spriteRenderer.push(
             "FPS = " + game.getFPS() + "\n" + "RES = " + Resource.getInstances(), 
-            8, 16, 16, scale, 5, 10 * scale, 10 * scale, 1, 1, 0, 1, 1, 0.5f, 0, 1
+            16, 10, 12, scale, 5, 10 * scale, 10 * scale, 1, 1, 0, 1, 1, 0.5f, 0, 1
         );
         spriteRenderer.end();
     }
