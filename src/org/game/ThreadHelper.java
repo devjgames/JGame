@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Utils {
+public class ThreadHelper {
     
     public static void startOnFirstThread(String[] args, String jarFileName) {
         String osName = System.getProperty("os.name").toLowerCase();
@@ -37,8 +37,8 @@ public class Utils {
                         }
                     }
                     System.exit(0);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception ex) {
+                    Log.getInstance().put(0, ex);
                 }
             }
         }

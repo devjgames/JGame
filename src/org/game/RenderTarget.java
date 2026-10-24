@@ -14,6 +14,7 @@ public class RenderTarget extends Resource {
     private int[] viewport = new int[4];
 
     public RenderTarget(int width, int height, boolean depthBuffer, ColorFormat ... formats) throws Exception {
+        Log.getInstance().put(1, "creating render target - " + width + " x " + height + " ...");
         if(formats.length == 0) {
             throw new Exception("render target must have at least one color format");
         }

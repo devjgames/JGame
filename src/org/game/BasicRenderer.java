@@ -18,6 +18,7 @@ public class BasicRenderer extends Resource {
     private Shader shader;
     private RenderTarget renderTarget = null;
     private Mat4 matrix = new Mat4();
+    private int trianglesRendered = 0;
 
     public BasicRenderer() throws Exception {
         shader = new Shader(
@@ -34,9 +35,12 @@ public class BasicRenderer extends Resource {
             "uniform mat4 uView;\n" +
             "uniform mat4 uModel;\n" +
             "uniform mat4 uModelIT;\n" +
+            getCustomVertexUniforms() + "\n" +
             "void main() {\n" +
-            "\tgl_Position = uProjection * uView * uModel * vec4(iPosition, 1.0);\n" +
-            "\tvPosition = (uModel * vec4(iPosition, 1.0)).xyz;\n" +
+            "\tvec4 position = (uModel * vec4(iPosition, 1.0));\n" +
+            getCustomVertexMain() + "\n" +
+            "\tgl_Position = uProjection * uView * position;\n" +
+            "\tvPosition = position.xyz;\n" +
             "\tvTextureCoordinate = iTextureCoordinate;\n" +
             "\tvNormal = normalize((uModelIT * vec4(iNormal, 0.0)).xyz);\n" +
             "\tvColor = iColor;\n" +
@@ -57,6 +61,7 @@ public class BasicRenderer extends Resource {
             "uniform sampler2D uTexture;\n" +
             "uniform int uTextureEnabled;\n" +
             "uniform int uLightingEnabled;\n"+
+            getCustomFragmentUniforms() + "\n" +
             "out vec4 oColor1;\n" +
             "out vec4 oColor2;\n" +
             "void main() {\n" +
@@ -75,6 +80,7 @@ public class BasicRenderer extends Resource {
             "\tif(uTextureEnabled != 0) {\n" +
             "\t\tcolor *= texture(uTexture, vTextureCoordinate);\n" +
             "\t}\n" +
+            getCustomFragmentMain() + "\n" +
             "\toColor1 = color;\n" +
             "\toColor2 = uEmissiveColor;\n" +
             "}\n",
@@ -84,6 +90,10 @@ public class BasicRenderer extends Resource {
             },
             getVertexAttributes()
         );
+    }
+
+    public int getTrianglesRendered() {
+        return trianglesRendered;
     }
 
     public RenderTarget getRenderTarget() {
@@ -96,6 +106,8 @@ public class BasicRenderer extends Resource {
 
     public void begin(int width, int height, float r, float g, float b, float a) throws Exception {
         boolean create = renderTarget == null;
+
+        trianglesRendered = 0;
 
         if(!create) {
             create = width > 10 && height > 10 && (renderTarget.getWidth() != width || renderTarget.getHeight() != height);
@@ -211,15 +223,39 @@ public class BasicRenderer extends Resource {
 
     public void draw(VertexArrayBuffer vertexBuffer) throws Exception {
         shader.draw(GeometryType.TRIANGLES, vertexBuffer);
+
+        trianglesRendered += vertexBuffer.getCount() / VERTEX_STRIDE / 3;
     }
 
     public void draw(VertexArrayBuffer vertexBuffer, VertexElementBuffer vertexElementBuffer) throws Exception {
         shader.draw(GeometryType.TRIANGLES, vertexBuffer, vertexElementBuffer);
+
+        trianglesRendered += vertexElementBuffer.getCount() / 3;
     }
 
     public void end() {
         shader.end();
         renderTarget.end();
+    }
+
+    protected String getCustomVertexUniforms() {
+        return "";
+    }
+
+    protected String getCustomVertexMain() {
+        return "";
+    }
+
+    protected String getCustomFragmentUniforms() {
+        return "";
+    }
+
+    protected String getCustomFragmentMain() {
+        return "";
+    }
+
+    protected Shader getShader() {
+        return shader;
     }
 
     private void checkLightIndex(int i) throws Exception {

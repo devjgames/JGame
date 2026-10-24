@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL30;
 
 public class Texture extends Resource {
 
-    public static  Texture load(File file) throws Exception {
+    static Texture load(File file) throws Exception {
         BufferedImage image = ImageIO.read(file);
         int w = image.getWidth();
         int h = image.getHeight();

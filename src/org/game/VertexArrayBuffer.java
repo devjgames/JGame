@@ -116,8 +116,8 @@ public class VertexArrayBuffer extends Resource {
         buf.limit(buf.capacity());
     }
 
-    public void calcBounds(GeometryType type, AABB b, VertexAttribute ... attributes) throws Exception {
-        GFX.validate(type, count, attributes);
+    public void calcBounds(AABB b, VertexAttribute ... attributes) throws Exception {
+        GFX.validate(null, count, attributes);
 
         int stride = GFX.stride(attributes);
 

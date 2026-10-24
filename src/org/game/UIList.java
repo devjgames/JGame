@@ -10,7 +10,8 @@ class UIList extends UIControl {
     private int start = 0;
     private int selected = -1;
     private float thumb = 0;
-    private boolean down = false;
+    private int di = -1;
+    private boolean drag = false;
     private int lastCount = 0;
 
     public UIList(int rows, int cols) {
@@ -93,7 +94,7 @@ class UIList extends UIControl {
                 int i = (y - y()) / (ui.charH + 16) + start;
 
                 if(i < items.size()) {
-                    selected = i;
+                    di = i;
                 }
             } else if(items.size() > rows) {
                 int x1 = x() + 16 + ui.charW * cols;
@@ -102,7 +103,7 @@ class UIList extends UIControl {
                 int y2 = y1 + ui.charH + 16;
 
                 if(x >= x1 && x <= x2 && y >= y1 && y <= y2) {
-                    down = true;
+                    drag = true;
                 }
             }
         }
@@ -110,12 +111,22 @@ class UIList extends UIControl {
 
     @Override
     public void mouseUp(UI ui, int x, int y) {
-        down = false;
+        if(hitTest(ui, x, y)) {
+            if(x < x() + 16 + ui.charW * cols) {
+                int i = (y - y()) / (ui.charH + 16) + start;
+
+                if(di == i) {
+                    selected = di;
+                }
+            }
+        }
+        di = -1;
+        drag = false;
     }
 
     @Override
     public void mouseMoved(UI ui, int x, int y) {
-        if(down) {
+        if(drag) {
             y = Math.max(0, y - y());
             thumb = Math.min(1, y / (float)(h(ui) - (ui.charH + 16)));
             start = Math.max(0, Math.min((int)(thumb * (items.size() - rows)), items.size() - rows));

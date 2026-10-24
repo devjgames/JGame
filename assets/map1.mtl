@@ -1,18 +1,8 @@
-# Blender 4.1.1 MTL File: 'models.blend'
+# Blender 5.2.2 LTS MTL File: 'models.blend'
 # www.blender.org
 
-newmtl Ledge
-Ns 1000.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 1
-map_Kd ledge.png
-
 newmtl Stone
-Ns 1000.000000
+Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
@@ -20,3 +10,13 @@ Ni 1.500000
 d 1.000000
 illum 1
 map_Kd stone.png
+
+newmtl StoneTrim
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd stone-trim.png

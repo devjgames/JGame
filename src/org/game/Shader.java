@@ -20,6 +20,8 @@ public class Shader extends Resource {
     }
 
     public Shader(String vertexSource, String fragmentSource, String[] gbuffers, VertexAttribute ... attributes) throws Exception {
+        Log.getInstance().put(1, "creating shader. ...");
+        
         int vs = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
         int fs = GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER);
 
@@ -62,6 +64,8 @@ public class Shader extends Resource {
         }
         GL20.glLinkProgram(program);
         if(GL20.glGetProgrami(program, GL20.GL_LINK_STATUS) == GL11.GL_FALSE) {
+            Log.getInstance().put(1, vertexSource);
+            Log.getInstance().put(1, fragmentSource);
             Log.getInstance().put(1, GL20.glGetProgramInfoLog(program));
             GL20.glDeleteProgram(program);
             program = 0;
@@ -172,7 +176,7 @@ public class Shader extends Resource {
         if(vertexBuffer.getCount() != 0 && vertexElementBuffer.getCount() != 0) {
             int x = 0;
 
-            GFX.validate(type, vertexElementBuffer.getCount() * GFX.stride(attributes), attributes);
+            GFX.validate(null, vertexElementBuffer.getCount() * GFX.stride(attributes), attributes);
             vertexElementBuffer.validate(vertexBuffer);
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexBuffer.getVBO());
             for(int i = 0; i != attributes.length; i++) {

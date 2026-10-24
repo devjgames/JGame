@@ -5,8 +5,6 @@ import java.util.Vector;
 
 public class UI {
     
-    final SpriteRenderer spriteRenderer;
-    final Texture font;
     final int scale;
     final int columns;
     final int charW;
@@ -14,6 +12,8 @@ public class UI {
     final int whiteX;
     final int whiteY;
 
+    private SpriteRenderer spriteRenderer;
+    private Texture font;
     private final Hashtable<String,  UIControl> controls = new Hashtable<>();
     private final Vector<UIControl> visible = new Vector<>();
     private boolean down = false;
@@ -32,6 +32,18 @@ public class UI {
         this.charH = charH;
         this.whiteX = whiteX;
         this.whiteY = whiteY;
+    }
+
+    public void setFont(Texture font) {
+        if(font != null) {
+            this.font = font;
+        }
+    }
+
+    public void setSpriteRenderer(SpriteRenderer spriteRenderer) {
+        if(spriteRenderer != null) {
+            this.spriteRenderer = spriteRenderer;
+        }
     }
 
     void drawHLine(int x1, int x2, int y, Vec4 color) {
@@ -77,17 +89,20 @@ public class UI {
         this.x = x;
         this.y = y;
         sx = x;
+        maxH = 0;
     }
 
     public void moveRightOf(String key, int gap) {
         this.x = controls.get(key).x() + controls.get(key).w(this) + gap;
         this.y = controls.get(key).y();
         sx = x;
+        maxH = 0;
     }
 
     public void addRow(int gap) {
         x = sx;
         y = y + maxH + gap;
+        maxH = 0;
     }
 
     public boolean button(String key, String text, boolean selected, int gap) {
@@ -116,10 +131,10 @@ public class UI {
         list.setPosition(x + gap, y);
         x = x + gap + list.w(this);
 
+        list.setItems(items);
         list.setSelected(selected);
 
         visible.add(list);
-        list.setItems(items);
 
         maxH = Math.max(maxH, list.h(this));
 

@@ -42,7 +42,7 @@ public class SpriteRenderer extends Resource {
     }
 
     public void setProjection(int width, int height) {
-        projection.identity().ortho(0, width, 0, height, -1, 1).translate(0, height, 0).scale(1, -1, 1);
+        projection.identity().orthoLH(0, width, height, 0, -1, 1);
         texture = null;
     }
 

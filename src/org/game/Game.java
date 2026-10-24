@@ -158,6 +158,10 @@ public class Game {
         fps = 0;
     }
 
+    public boolean isSwapOne() {
+        return swapInterval == 1;
+    }
+
     public void toggleSwapInterval() {
         if(swapInterval == 1) {
             swapInterval = 0;
@@ -211,6 +215,10 @@ public class Game {
 
         lastX = x;
         lastY = y;
+    }
+
+    public boolean isFullscreen() {
+        return isFullscreen;
     }
 
     public void toggleFullscreen() {
