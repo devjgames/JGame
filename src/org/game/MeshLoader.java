@@ -59,7 +59,6 @@ public class MeshLoader {
         String material = "";
         Hashtable<String, String> textureNames = new Hashtable<>();
         Hashtable<String, Texture> textures = new Hashtable<>(); 
-        Game game = Game.getInstance();
 
         for(String line : lines) {
             String tLine = line.trim();
@@ -68,7 +67,7 @@ public class MeshLoader {
             if(tLine.startsWith("mtllib ")) {
                 String[] mLines = new String(
                     IOHelper.readAllBytes(
-                        new File(game.getResources().getRoot(), tLine.substring(6).trim())
+                        new File(file.getParent(), tLine.substring(6).trim())
                     )
                 ).split("\\n+");
                 String m = "";
@@ -80,7 +79,13 @@ public class MeshLoader {
                         m = tmLine.substring(6).trim();
                         textureNames.put(m, "");
                     } else if(tmLine.startsWith("map_Kd ")) {
-                        textureNames.put(m, tmLine.substring(6).trim());
+                        String tn = tmLine.substring(6).trim();
+                        int i = tn.lastIndexOf(File.separatorChar);
+
+                        if(i != -1) {
+                            tn = tn.substring(i + 1);
+                        }
+                        textureNames.put(m, tn);
                     }
                 }
             } else if(tLine.startsWith("usemtl ")) {
@@ -145,7 +150,7 @@ public class MeshLoader {
                 }
                 part.put(NAME, objPart.name);
                 part.bounds.set(objPart.bounds);
-                part.iBounds.set(part.bounds);
+                part.getIBounds().set(part.bounds);
 
                 part.vertexBuffer.begin(objPart.vertices.size() * BasicRenderer.VERTEX_STRIDE);
                 for(OBJVertex vertex : objPart.vertices) {
@@ -171,13 +176,15 @@ public class MeshLoader {
     private static void loadTexture(File objFile, String name, Hashtable<String, Texture> textures, OBJMeshPart part) throws Exception {
         if(name != null) {
             if(!name.isEmpty()) {
+                Game game = Game.getInstance();
                 File texFile = new File(objFile.getParentFile(), name);
 
                 if(texFile.exists()) {
-                    Game game = Game.getInstance();
-
                     if(!textures.containsKey(name)) {
-                        textures.put(name, game.getResources().load(new File(name)));
+                        int i = game.getResources().getRoot().getPath().length();
+
+                        texFile = new File(texFile.getPath().substring(i + 1));
+                        textures.put(name, game.getResources().load(texFile));
                     }
                     if(textures.containsKey(name)) {
                         part.texture = textures.get(name);

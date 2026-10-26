@@ -31,7 +31,7 @@ public class OutlineRenderer extends Resource {
             "\t\tvec4 c = vec4(0.0, 0.0, 0.0, 0.0);\n" +
             "\t\tfor(int x = -uWidth; x != uWidth; x++) {\n" +
             "\t\t\tfor(int y = -uWidth; y != uWidth; y++) {\n" +
-            "\t\t\t\tvec4 pC = texture(uTexture, vTextureCoordinate + uPixelSize * vec2(float(x) + 0.5, float(y) + 0.5));\n" +
+            "\t\t\t\tvec4 pC = texture(uTexture, clamp(vTextureCoordinate + uPixelSize * vec2(float(x) + 0.5, float(y) + 0.5), uPixelSize, vec2(1.0, 1.0) - uPixelSize));\n" +
             "\t\t\t\tif(pC.a > 0.5) {\n" +
             "\t\t\t\t\tc = pC;\n" +
             "\t\t\t\t}\n" +

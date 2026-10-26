@@ -4,9 +4,9 @@ import org.game.BasicRenderer;
 import org.game.Texture;
 import org.game.Vec4;
 
-public class DecalRenderer extends BasicRenderer {
+public class BasicRenderer2 extends BasicRenderer {
     
-    public DecalRenderer() throws Exception {
+    public BasicRenderer2() throws Exception {
     }
 
     @Override

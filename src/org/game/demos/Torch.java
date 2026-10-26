@@ -3,6 +3,7 @@ package org.game.demos;
 import java.io.File;
 import java.util.Random;
 
+import org.game.AABB;
 import org.game.BasicRenderer;
 import org.game.BlendState;
 import org.game.GFX;
@@ -106,18 +107,24 @@ public class Torch extends Model {
         }
 
         Mesh mesh = (Mesh)node.data.get("mesh");
+        ParticleSystem ps = (ParticleSystem)node.data.get("fire");
 
         mesh.calcBoundsAndTransform(node);
 
-        GFX.setBlendState(BlendState.ADDITIVE);
+        if(gs.frustum.testAab((AABB)ps.getBounds().transform(mesh.model))) {
+            GFX.setBlendState(BlendState.ADDITIVE);
 
-        ParticleSystem ps = (ParticleSystem)node.data.get("fire");
+            basicRenderer.setLightingEnabled(false);
+            basicRenderer.setTexture(ps.texture);
+            basicRenderer.setModel(mesh.model);
+            basicRenderer.setModelIT(mesh.modelIT);
 
-        basicRenderer.setLightingEnabled(false);
-        basicRenderer.setTexture(ps.texture);
-        basicRenderer.setModel(mesh.model);
-        basicRenderer.setModelIT(mesh.modelIT);
-        basicRenderer.draw(ps.vertexBuffer);
+            BasicRenderer2 decalRenderer = (BasicRenderer2)basicRenderer;
+            
+            decalRenderer.setDecal(null);
+
+            basicRenderer.draw(ps.vertexBuffer);
+        }
     }
 
     @Override

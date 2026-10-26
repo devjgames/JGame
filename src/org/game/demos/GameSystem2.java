@@ -12,6 +12,6 @@ public class GameSystem2 extends GameSystem {
 
     @Override
     protected BasicRenderer createRenderer() throws Exception {
-        return new DecalRenderer();
+        return new BasicRenderer2();
     }
 }

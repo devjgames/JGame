@@ -8,7 +8,6 @@ import org.game.Collider;
 import org.game.GameComponent;
 import org.game.GameNode;
 import org.game.GameSystem;
-import org.game.Log;
 import org.game.Mesh;
 import org.game.Resource;
 import org.game.SpriteRenderer;
@@ -45,7 +44,6 @@ public class Player extends Model {
                 String name = model.getMeshName();
 
                 if(name.equals("map1.obj")) {
-                    Log.getInstance().put(1, "adding triangle selector -> " + name + " ...");
                     collider.selectors.add((Mesh)((GameNode)gs.getNode(i)).data.get("mesh"));
                 }
             }
@@ -95,6 +93,7 @@ public class Player extends Model {
             "FPS = " + gs.game.getFPS() + "\n" +
             "RES = " + Resource.getInstances() + "\n" +
             "TRI = " + basicRenderer.getTrianglesRendered() + "\n" +
+            "TST = " + collider.getTested() + "\n" +
             "POS = " + (int)gs.eye.x + ", " + (int)gs.eye.y + ", " + (int)gs.eye.z + "\n",
             16, 10, 12, s, 5, 10 * s, 10 * s, 1, 1, 0, 1, 1, 0.5f, 0, 1
         );

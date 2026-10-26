@@ -9,8 +9,9 @@ public class MeshPart extends TaggedResource implements TriangleSelector {
     public final VertexArrayBuffer vertexBuffer;
     public final VertexElementBuffer vertexElementBuffer;
     public final AABB bounds = new AABB();
-    public final AABB iBounds = new AABB();
     public final Mesh parent;
+
+    private final AABB iBounds = new AABB();
 
     private Triangle triangle = new Triangle();
 
@@ -18,6 +19,10 @@ public class MeshPart extends TaggedResource implements TriangleSelector {
         vertexBuffer = new VertexArrayBuffer(vertexBufferCountAdder);
         vertexElementBuffer = new VertexElementBuffer(vertexElementBufferCountAdder);
         this.parent = parent;
+    }
+
+    public AABB getIBounds() {
+        return iBounds;
     }
 
     public void calcBounds() throws Exception {

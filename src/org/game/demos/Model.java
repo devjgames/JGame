@@ -3,7 +3,6 @@ package org.game.demos;
 import java.io.File;
 
 import org.game.BasicRenderer;
-import org.game.Frustum;
 import org.game.GameComponent;
 import org.game.GameNode;
 import org.game.GameSystem;
@@ -88,17 +87,11 @@ public class Model extends GameComponent {
 
         mesh.calcBoundsAndTransform(node);
 
-        if(gs.frustum.intersectAab(
-            mesh.bounds.minX, mesh.bounds.minY, mesh.bounds.minZ,
-            mesh.bounds.maxX, mesh.bounds.maxY, mesh.bounds.maxZ
-        ) != Frustum.OUTSIDE) {
+        if(gs.frustum.testAab(mesh.bounds)) {
             for(int j = 0; j != mesh.getPartCount(); j++) {
                 MeshPart part = mesh.getPart(j);
 
-                if(gs.frustum.intersectAab(
-                    part.bounds.minX, part.bounds.minY, part.bounds.minZ,
-                    part.bounds.maxX, part.bounds.maxY, part.bounds.maxZ
-                ) != Frustum.OUTSIDE) {
+                if(gs.frustum.testAab(part.bounds)) {
 
                     basicRenderer.setModel(mesh.model);
                     basicRenderer.setModelIT(mesh.modelIT);
@@ -106,7 +99,7 @@ public class Model extends GameComponent {
                     basicRenderer.setDiffuseColor(mesh.get(MeshLoader.DIFFUSE_COLOR));
                     basicRenderer.setTexture(part.get(MeshLoader.TEXTURE));
 
-                    DecalRenderer dr = (DecalRenderer)basicRenderer;
+                    BasicRenderer2 dr = (BasicRenderer2)basicRenderer;
 
                     if(meshName.equals("door.obj")) {
                         dr.setDecal(gs.game.getResources().load(new File("door-glow.png")));

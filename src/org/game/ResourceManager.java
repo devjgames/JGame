@@ -8,7 +8,7 @@ public class ResourceManager extends Resource {
 
     public static interface Loader {
 
-        public <T extends  Resource> T load(File file, String extension) throws Exception;
+        public Object load(File file, String extension) throws Exception;
     }
     
     private File root = new File("assets");
@@ -60,7 +60,7 @@ public class ResourceManager extends Resource {
                 T resource = null;
 
                 if(loader != null) {
-                    resource = loader.load(file, extension);
+                    resource = (T)loader.load(file, extension);
                 }
                 if(resource != null) {
                     keyedResources.put(file, resource);

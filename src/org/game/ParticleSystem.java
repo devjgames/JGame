@@ -15,6 +15,7 @@ public final class ParticleSystem extends Resource {
     private final Vec3 f = new Vec3();
     private float time = 0;
     private final AABB bounds = new AABB();
+    private final AABB tBounds = new AABB();
     private final int max;
 
     public ParticleSystem(int maxParticles) throws Exception {
@@ -28,7 +29,7 @@ public final class ParticleSystem extends Resource {
     }
 
     public AABB getBounds() {
-        return bounds;
+        return (AABB)tBounds.set(bounds);
     }
 
     public void update(GameSystem gs, Mat4 model) throws Exception {
