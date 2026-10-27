@@ -66,7 +66,7 @@ public class GameSystem {
 
         game = Game.getInstance();
 
-        ui = new UI(spriteRenderer, getFont(), 16, 10, 12, 14, 5);
+        ui = createUI(getFont());
 
         if(!uiEnabled) {
             this.inDesign = false;
@@ -152,6 +152,10 @@ public class GameSystem {
 
     protected BasicRenderer createRenderer() throws Exception {
         return new BasicRenderer();
+    }
+
+    protected UI createUI(Texture font) {
+        return new UI(spriteRenderer, font, 16, 10, 12, 14, 5);  
     }
 
     protected Texture getFont() throws Exception {

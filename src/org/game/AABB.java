@@ -25,6 +25,17 @@ public class AABB extends AABBf {
         setMin(+Float.MAX_VALUE, +Float.MAX_VALUE, +Float.MAX_VALUE);
     }
 
+    public void buffer(float x, float y, float z) {
+        if(!isEmpty()) {
+            minX -= x;
+            minY -= y;
+            minZ -= z;
+            maxX += x;
+            maxY += y;
+            maxZ += z;
+        }
+    }
+
     public boolean isEmpty() {
         return minX > maxX || minY > maxY || minZ > maxZ;
     }

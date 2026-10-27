@@ -27,6 +27,7 @@ public class MeshPart extends TaggedResource implements TriangleSelector {
 
     public void calcBounds() throws Exception {
         bounds.set(iBounds).transform(parent.model);
+        bounds.buffer(0.1f, 0.1f, 0.1f);
     }
 
     public boolean pick(Vec3 origin, Vec3 direction, float[] time) {
