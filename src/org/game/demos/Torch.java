@@ -129,6 +129,6 @@ public class Torch extends Model {
 
     @Override
     public String toString() {
-        return "torch_" + radius;
+        return "torch_" + (int)radius;
     }
 }

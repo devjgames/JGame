@@ -1,15 +1,15 @@
 # name x y z rx ry rz ux uy uz fx fy fz
 map1.obj 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0
 # name x y z rx ry rz ux uy uz fx fy fz
-torch_200.0 96.0 64.0 -96.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0
+torch_200 96.0 64.0 -96.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0
 # name x y z rx ry rz ux uy uz fx fy fz
 door.obj 224.0 0.0 -96.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0
 # name x y z rx ry rz ux uy uz fx fy fz
-torch_50.0 288.0 32.0 -96.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0
+torch_50 288.0 32.0 -96.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0
 # name x y z rx ry rz ux uy uz fx fy fz
-torch_50.0 288.0 16.0 -224.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0
+torch_50 288.0 16.0 -224.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0
 # name x y z rx ry rz ux uy uz fx fy fz
-torch_200.0 480.0 32.0 -224.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0
+torch_200 480.0 32.0 -224.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0
 # name x y z rx ry rz ux uy uz fx fy fz
 axis 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0
 # name x y z rx ry rz ux uy uz fx fy fz
