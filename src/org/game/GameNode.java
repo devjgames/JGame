@@ -10,6 +10,7 @@ public class GameNode {
     public final Vec3 f = new Vec3(0, 0, 1);
     public final Vec3 scale = new Vec3(1, 1, 1);
     public final Hashtable<String, Object> data = new Hashtable<>();
+    public String value = "";
 
     private Mat4 m = new Mat4();
 

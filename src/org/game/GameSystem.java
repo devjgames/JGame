@@ -60,6 +60,7 @@ public class GameSystem {
     private float[] time = new float[1];
     private boolean down = false;
     private boolean captured = false;
+    private boolean updateValueText = false;
 
     public GameSystem(String sceneName, boolean inDesign, boolean uiEnabled, GameComponent ... factories) throws Exception {
         this.inDesign = inDesign;
@@ -183,6 +184,20 @@ public class GameSystem {
             GameComponent component = components.get(i);
             GameNode node = nodes.get(i);
 
+            if(!inDesign) {
+                File file;
+
+                if((file = component.loadFile(this, node)) != null) {
+                    load(file);
+                    break;
+                }
+            }
+        }
+
+        for(int i = 0; i != components.size(); i++) {
+            GameComponent component = components.get(i);
+            GameNode node = nodes.get(i);
+
             component.update(this, node);
 
             for(int j = 0; j != 64; j++) {
@@ -192,14 +207,6 @@ public class GameSystem {
                     lights.add(light);
                 } else {
                     break;
-                }
-            }
-
-            if(!inDesign) {
-                File file;
-
-                if((file = component.loadFile(this, node)) != null) {
-                    load(file);
                 }
             }
         }
@@ -298,15 +305,7 @@ public class GameSystem {
                 game.toggleFullscreen();
             }
             if(iNode != -1) {
-                if(ui.button("rx", "RX", false, 20)) {
-                    nodes.get(iNode).rotate(0, 45);
-                }
-                if(ui.button("ry", "RY", false, 5)) {
-                    nodes.get(iNode).rotate(1, 45);
-                }
-                if(ui.button("rz", "RZ", false, 5)) {
-                    nodes.get(iNode).rotate(2, 45);
-                }
+                ui.label("selectedLabel", components.get(iNode).toString(), 25,10);
             }
             ui.addRow(10);
             i = ui.list("sceneList", sceneNames, 4, 14, sceneIndex, 0);
@@ -343,6 +342,8 @@ public class GameSystem {
                     component.init(this, node);
                     components.add(component);
                     nodes.add(node);
+
+                    updateValueText = true;
                 }
             }
             if(iNode != -1) {
@@ -366,12 +367,36 @@ public class GameSystem {
                 if(ui.button("t2", "T2", false, 5)) {
                     target.set(nodes.get(iNode).position);
                 }
+                ui.addRow(5);
+                if(ui.button("rx", "RX", false, 0)) {
+                    nodes.get(iNode).rotate(0, 45);
+                }
+                if(ui.button("ry", "RY", false, 5)) {
+                    nodes.get(iNode).rotate(1, 45);
+                }
+                if(ui.button("rz", "RZ", false, 5)) {
+                    nodes.get(iNode).rotate(2, 45);
+                }
             }
             if(ui.button("ic", "IC", false, 5)) {
                 eye.set(100, 100, 100);
                 target.zero();
                 up.set(0, 1, 0);
             }
+            if(iNode != -1) {
+                GameNode node = nodes.get(iNode);
+
+                ui.addRow(5);
+                ui.label("valueLabel", "value", 5, 0);
+                ui.addRow(5);
+
+                String r;
+
+                if((r = ui.text("valueText", node.value, 15, updateValueText, 0)) != null) {
+                    node.value = r;
+                }
+            }
+            updateValueText = false;
             if(resetS) {
                 sceneIndex = -2;
             }
@@ -445,6 +470,7 @@ public class GameSystem {
 
                                 if(component.pick(this, node, origin, direction, time)) {
                                     iNode = i;
+                                    updateValueText = true;
                                 }
                             }
                         }
@@ -510,7 +536,11 @@ public class GameSystem {
             text += node.u.z + " ";
             text += node.f.x + " ";
             text += node.f.y + " ";
-            text += node.f.z + "\n";
+            text += node.f.z + " ";
+            if(node.value != null) {
+                text += node.value;
+            }
+            text += "\n";
         }
         IOHelper.writeAllBytes(text.getBytes(), file);
     }
@@ -562,7 +592,7 @@ public class GameSystem {
             if(!tLine.startsWith("#") && !tLine.isEmpty()) {
                 String[] tokens = tLine.split("\\s+");
 
-                if(tokens.length == 13) {
+                if(tokens.length >= 13) {
                     try {
                         GameNode node = new GameNode();
                         GameComponent component = factories.get(tokens[0]);
@@ -579,6 +609,10 @@ public class GameSystem {
                         node.f.x = Float.parseFloat(tokens[10]);
                         node.f.y = Float.parseFloat(tokens[11]);
                         node.f.z = Float.parseFloat(tokens[12]);
+
+                        if(tokens.length > 13) {
+                            node.value = tokens[13];
+                        }
 
                         component.init(this, node);
                         nodes.add(node);

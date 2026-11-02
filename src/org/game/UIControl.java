@@ -43,9 +43,12 @@ abstract class UIControl {
     public void mouseMoved(UI ui, int x, int y) {
     }
 
-    public void keyDown(UI ui, Keys key) {
+    public void keyDown(UI ui, int key) {
     }
 
-    public void keyUp(UI ui, Keys key) {
+    public void keyUp(UI ui, int key) {
+    }
+
+    public void charPressed(UI ui, char c) {
     }
 }

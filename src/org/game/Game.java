@@ -55,7 +55,7 @@ public class Game {
         GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_FORWARD_COMPAT, GLFW.GLFW_TRUE);
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE);
 
-        window = GLFW.glfwCreateWindow(width, height, "Test", 0, 0);
+        window = GLFW.glfwCreateWindow(width, height, title, 0, 0);
 
         if(window == 0) {
             GLFW.glfwTerminate();

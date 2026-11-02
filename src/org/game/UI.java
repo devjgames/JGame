@@ -3,6 +3,10 @@ package org.game;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWCharCallbackI;
+import org.lwjgl.glfw.GLFWKeyCallbackI;
+
 public class UI {
     
     final int scale;
@@ -22,8 +26,11 @@ public class UI {
     private int y = 0;
     private int sx = 0;
     private int maxH = 0;
+    private UI me;
 
     public UI(SpriteRenderer spriteRenderer, Texture font, int columns, int charW, int charH, int whiteX, int whiteY) {
+        me = this;
+
         this.spriteRenderer = spriteRenderer;
         this.font = font;
         this.scale = Game.getInstance().getScale();
@@ -32,6 +39,37 @@ public class UI {
         this.charH = charH;
         this.whiteX = whiteX;
         this.whiteY = whiteY;
+
+        GLFW.glfwSetCharCallback(Game.getInstance().getWindow(), new GLFWCharCallbackI() {
+
+            @Override
+            public void invoke(long window, int c) {
+                if(focus != null) {
+                    if(c >= 32 && c <= 127) {
+                        focus.charPressed(me, (char)c);
+                    }
+                }
+            }
+            
+        });
+        GLFW.glfwSetKeyCallback(Game.getInstance().getWindow(), new GLFWKeyCallbackI() {
+
+            @Override
+            public void invoke(long window, int key, int scanCode, int action, int mods) {
+                if(focus != null) {
+                    if(action == GLFW.GLFW_PRESS) {
+                        focus.keyDown(me, key);
+                    } else if(action == GLFW.GLFW_RELEASE) {
+                        focus.keyUp(me, key);
+                    }
+                }
+            }
+            
+        });
+    }
+
+    UIControl getFocus() {
+        return focus;
     }
 
     public void setFont(Texture font) {
@@ -103,6 +141,42 @@ public class UI {
         x = sx;
         y = y + maxH + gap;
         maxH = 0;
+    }
+
+    public void label(String key, String text, int maxChars, int gap) {
+        UILabel label = (UILabel)controls.get(key);
+
+        if(label == null) {
+            controls.put(key, label = new UILabel(maxChars));
+        }
+        label.setPosition(x + gap, y);
+        label.setText(text);
+
+        x = x + gap + label.w(this);
+
+        maxH = Math.max(maxH, label.h(this));
+
+        visible.add(label);
+    }
+
+    public String text(String key, String text, int maxChars, boolean updateText, int gap) {
+        UIText t = (UIText)controls.get(key);
+
+        if(t == null) {
+            controls.put(key, t = new UIText(maxChars));
+        }
+        t.setPosition(x + gap, y);
+        if(updateText) {
+            t.setText(text);
+        }
+
+        x = x + gap + t.w(this);
+
+        maxH = Math.max(maxH, t.h(this));
+
+        visible.add(t);
+
+        return t.changed();
     }
 
     public boolean button(String key, String text, boolean selected, int gap) {
