@@ -325,7 +325,7 @@ public class GameSystem {
             ui.addRow(5);
             for(i = 0; i != SNAP.length; i++) {
                 if(i == 4) {
-                    ui.addRow(10);
+                    ui.addRow(5);
                 }
                 if(ui.button("snap" + i, (SNAP[i] < 16) ? SNAP[i] + " " : "" + SNAP[i], snap == i, (i == 0 || i == 4) ? 0 : 5)) {
                     snap = i;
