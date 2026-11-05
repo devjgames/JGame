@@ -41,6 +41,18 @@ public class IOHelper {
         }
     }
 
+    public static byte[] readAllBytes(Class<?> cls, String name) throws IOException {
+        InputStream input = null;
+
+        try {
+            return readAllBytes(input = cls.getResourceAsStream(name));
+        } finally {
+            if(input != null) {
+                input.close();
+            }
+        }
+    }
+
     public static void writeAllBytes(byte[] bytes, File file) throws IOException {
         FileOutputStream output = null;
 
