@@ -217,11 +217,13 @@ public class GameSystem {
 
         calcTransform();
 
+        int lightCount = Math.min(BasicRenderer.MAX_LIGHTS, lights.size());
+
         renderer.begin(w(), h(), backgroundColor);
         renderer.setProjection(projection);
         renderer.setView(view);
-        renderer.setLightCount(lights.size());
-        for(int i = 0; i != Math.min(BasicRenderer.MAX_LIGHTS, lights.size()); i++) {
+        renderer.setLightCount(lightCount);
+        for(int i = 0; i != lightCount; i++) {
             GameLight light = lights.get(i);
             
             renderer.setLightPosition(i, light.position);
