@@ -196,6 +196,25 @@ public class UI {
         return button.clicked();
     }
 
+    public float slider(String key, int width, float value, boolean setValue, int gap) {
+        UISlider slider = (UISlider)controls.get(key);
+
+        if(slider == null) {
+            controls.put(key, slider = new UISlider(width));
+        }
+        slider.setPosition(x + gap, y);
+        x = x + gap + slider.w(this);
+
+        visible.add(slider);
+
+        if(setValue) {
+            slider.setValue(value);
+        }
+        maxH = Math.max(maxH, slider.h(this));
+
+        return slider.value();
+    }
+
     public int list(String key, Vector<Object> items, int rows, int cols, int selected, int gap) {
         UIList list = (UIList)controls.get(key);
 

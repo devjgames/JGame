@@ -396,6 +396,7 @@ public class GameSystem {
                     node.value = r;
                 }
             }
+            ui.addRow(5);
             updateValueText = false;
             if(resetS) {
                 sceneIndex = -2;
