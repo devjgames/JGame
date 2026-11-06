@@ -134,7 +134,7 @@ public class BasicRenderer extends Resource {
         for(int i = 0; i != MAX_LIGHTS; i++) {
             setLightPosition(i, 0, 0, 0);
             setLightColor(i, 1, 1, 1, 1);
-            setLightRaius(i, 300);
+            setLightRadius(i, 300);
         }
     }
 
@@ -216,7 +216,7 @@ public class BasicRenderer extends Resource {
         shader.set("uLightColor[" + i + "]", color);
     }
     
-    public void setLightRaius(int i, float radius) throws Exception {
+    public void setLightRadius(int i, float radius) throws Exception {
         checkLightIndex(i);
         shader.set("uLightRadius[" + i + "]", radius);
     }

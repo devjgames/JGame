@@ -226,7 +226,7 @@ public class GameSystem {
             
             renderer.setLightPosition(i, light.position);
             renderer.setLightColor(i, light.color);
-            renderer.setLightRaius(i, light.radius);
+            renderer.setLightRadius(i, light.radius);
         }
         GFX.setDepthState(DepthState.NONE);
         for(int i = 0; i != components.size(); i++ ) {
