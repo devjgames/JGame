@@ -5,9 +5,9 @@ torch 96.0 64.0 -96.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0 150
 # name x y z rx ry rz ux uy uz fx fy fz
 door.obj 224.0 0.0 -96.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0 
 # name x y z rx ry rz ux uy uz fx fy fz
-torch 288.0 32.0 -96.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0 85
+torch 288.0 32.0 -96.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0 80
 # name x y z rx ry rz ux uy uz fx fy fz
-torch 288.0 16.0 -224.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0 85
+torch 288.0 16.0 -224.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0 60
 # name x y z rx ry rz ux uy uz fx fy fz
 torch 480.0 32.0 -224.0 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0 150
 # name x y z rx ry rz ux uy uz fx fy fz
