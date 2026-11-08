@@ -21,14 +21,11 @@ public class Torch extends Model {
     private Random random = new Random(100);
     private Particle particle = new Particle();
     private Vec4 color;
-    private float radius;
 
-    public Torch(float r, float g, float b, float a, float radius) {
+    public Torch(float r, float g, float b, float a) {
         super("torch.obj");
 
         color = new Vec4(r, g, b, a);
-        
-        this.radius = radius;
     }
 
     @Override
@@ -40,10 +37,10 @@ public class Torch extends Model {
                 light = new GameLight();
 
                 light.color.set(color);
-                light.radius = radius;
-
                 node.data.put("gameLight", light);
             }
+
+            light.radius = (Float)node.data.get("radius");
 
             Mesh mesh = (Mesh)node.data.get("mesh");
 
@@ -61,6 +58,13 @@ public class Torch extends Model {
         super.init(gs, node);
 
         ParticleSystem ps;
+
+        if(!node.data.containsKey("radius")) {
+            float r = 50;
+
+            node.data.put("radius", r);
+            node.value = "" + r;
+        }
 
         node.data.put("fire", gs.game.getResources().manage(ps = new ParticleSystem(500)));
 
@@ -128,7 +132,16 @@ public class Torch extends Model {
     }
 
     @Override
+    public void parseValue(GameSystem gs, GameNode node) throws Exception {
+        try {
+            node.data.put("radius", Float.parseFloat(node.value.trim()));
+        } catch(NumberFormatException ex) {
+
+        }
+    }
+
+    @Override
     public String toString() {
-        return "torch_" + (int)radius;
+        return "torch";
     }
 }

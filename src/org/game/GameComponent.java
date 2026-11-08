@@ -23,6 +23,9 @@ public abstract class GameComponent {
     public void render(GameSystem gs, GameNode node, SpriteRenderer spriteRenderer, BasicRenderer basicRenderer) throws Exception {
     }
 
+    public void parseValue(GameSystem gs, GameNode node) throws Exception {
+    }
+
     public File loadFile(GameSystem gs, GameNode node) throws Exception {
         return null;
     }

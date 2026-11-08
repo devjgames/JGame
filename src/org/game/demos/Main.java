@@ -6,7 +6,7 @@ import org.game.ThreadHelper;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        ThreadHelper.startOnFirstThread(args, "JGame.jar");
+       ThreadHelper.startOnFirstThread(args, "JGame.jar");
 
         Game game = null;
 
@@ -14,8 +14,7 @@ public class Main {
             game = new Game(900, 600, "JGame", true);
 
             GameSystem gs = new GameSystem2(
-                new Torch(0, 2, 4, 1, 200),
-                new Torch(0, 2, 4, 1, 50),
+                new Torch(0, 2, 4, 1),
                 new Model("map1.obj"),
                 new Model("door.obj"),
                 new Axis(),

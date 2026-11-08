@@ -40,6 +40,7 @@ public class Model extends GameComponent {
         } else if(meshName.equals("axis.obj")) {
             mesh.put(MeshLoader.AMBIENT_COLOR, new Vec4(1, 1, 1, 1));
             mesh.put(MeshLoader.DIFFUSE_COLOR, new Vec4(1, 1, 1, 1));
+            node.scale.mul(0.5f);
         }
         node.data.put("mesh", mesh);
     }

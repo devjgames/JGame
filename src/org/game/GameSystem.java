@@ -396,6 +396,7 @@ public class GameSystem {
 
                 if((r = ui.text("valueText", node.value, 15, updateValueText, 0)) != null) {
                     node.value = r;
+                    components.get(iNode).parseValue(this, node);
                 }
             }
             ui.addRow(5);
@@ -615,6 +616,7 @@ public class GameSystem {
 
                         if(tokens.length > 13) {
                             node.value = tokens[13];
+                            component.parseValue(this, node);
                         }
 
                         component.init(this, node);
