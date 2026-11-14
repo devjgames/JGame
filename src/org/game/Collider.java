@@ -3,12 +3,18 @@ package org.game;
 import java.util.Vector;
 
 public class Collider {
+
+    public static interface ContactHandler {
+    
+        public void contactMade(TriangleSelector selector, Triangle triangle);
+    }
     
     public Vec3 velocity = new Vec3();
     public float groundSlope = 60;
     public float roofSlope = 30;
     public float radius = 16;
     public final Vector<TriangleSelector> selectors = new Vector<>();
+    public ContactHandler handler = null;
 
     private Mat4 groundMatrix = new Mat4();
     private Vec3 groundNormal = new Vec3();
@@ -28,6 +34,8 @@ public class Collider {
     private AABB bounds = new AABB();
     private boolean hit = false;
     private int tested = 0;
+    private TriangleSelector hitSelector = null;
+    private Triangle hitTriangle = null;
 
     public int getTested() {
         return tested;
@@ -67,6 +75,9 @@ public class Collider {
             bounds.maxY = position.y + radius;
             bounds.maxZ = position.z + radius;
 
+            hitSelector = null;
+            hitTriangle = null;
+
             for(TriangleSelector selector : selectors) {
                 selector.select(bounds, false, (triangle, userData) -> {
                     float t = triangle.n.dot(-triangle.n.x, -triangle.n.y, -triangle.n.z);
@@ -91,6 +102,8 @@ public class Collider {
                                 normal.set(triangle.n);
                                 resolved.set(ix, iy, iz).add(normal.x * radius, normal.y * radius, normal.z * radius);
                                 hit = true;
+                                hitSelector = selector;
+                                hitTriangle = triangle;
                             } else {
                                 closestPoint(triangle, position);
                                 position.sub(closest, delta);
@@ -100,6 +113,8 @@ public class Collider {
                                     normal.set(delta).normalize();
                                     resolved.set(closest).add(normal.x * radius, normal.y * radius, normal.z * radius);
                                     hit = true;
+                                    hitSelector = selector;
+                                    hitTriangle = triangle;
                                 }
                              }
                         }
@@ -119,6 +134,10 @@ public class Collider {
                     velocity.y = 0;
                 }
                 position.set(resolved);
+
+                if(handler != null) {
+                    handler.contactMade(hitSelector, hitTriangle);
+                }
             } else {
                 break;
             }
