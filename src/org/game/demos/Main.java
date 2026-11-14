@@ -6,7 +6,7 @@ import org.game.ThreadHelper;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-       ThreadHelper.startOnFirstThread(args, "JGame.jar");
+        ThreadHelper.startOnFirstThread(args, "JGame.jar");
 
         Game game = null;
 
