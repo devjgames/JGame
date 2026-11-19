@@ -28,12 +28,6 @@ public class Mesh extends TaggedResource implements TriangleSelector {
     public void calcBoundsAndTransform(GameNode node) throws Exception {
         node.calcModel(model);
 
-        Vec3 position = (Vec3)get(MeshLoader.POSITION);
-
-        if(position != null) {
-            model.translate(position);
-        }
-
         modelIT.set(model).invert().transpose();
 
         calcBounds();

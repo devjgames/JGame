@@ -11,7 +11,6 @@ public class MeshLoader {
     public static final UUID AMBIENT_COLOR = UUID.randomUUID();
     public static final UUID DIFFUSE_COLOR = UUID.randomUUID();
     public static final UUID TEXTURE = UUID.randomUUID();
-    public static final UUID POSITION = UUID.randomUUID();
 
     public static class OBJVertex {
         public final Vec3 position = new Vec3();
@@ -139,7 +138,6 @@ public class MeshLoader {
         mesh.bounds.set(objMesh.bounds);
         mesh.put(AMBIENT_COLOR, new Vec4(0.2f, 0.2f, 0.2f, 1));
         mesh.put(DIFFUSE_COLOR, new Vec4(1, 1, 1, 1));
-        mesh.put(POSITION, new Vec3());
 
         for(OBJMeshPart objPart : objMesh.parts) {
             if(objPart.indexCount != 0) {

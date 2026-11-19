@@ -38,6 +38,7 @@ public class Game {
     private int swapInterval = 1;
     private ResourceManager resources = new ResourceManager();
     private boolean mouseGrabbed = false;
+    private SoundEngine soundEngine;
 
     public Game(int width, int height, String title, boolean resizable) throws Exception {
         if(instance != null) {
@@ -67,6 +68,8 @@ public class Game {
         GLFW.glfwSwapInterval(swapInterval);
 
         Log.getInstance().put(1, GL11.glGetString(GL11.GL_VERSION));
+
+        soundEngine = new SoundEngine();
 
         resetTimer();
     }
@@ -238,8 +241,9 @@ public class Game {
         }
     }
 
-    public void destroy() {
+    public void destroy() throws Exception {
         Log.getInstance().put(1, Resource.getInstances() + " resource(s)");
+        soundEngine.destroy();
         resources.destroy();
         Log.getInstance().put(1, Resource.getInstances() + " resource(s)");
         GLFW.glfwDestroyWindow(window);

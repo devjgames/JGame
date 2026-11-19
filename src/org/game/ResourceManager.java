@@ -56,6 +56,8 @@ public class ResourceManager extends Resource {
                 keyedResources.put(file, Texture.load(file));
             } else if(extension.equals(".obj")) {
                 keyedResources.put(file, MeshLoader.load(file));
+            } else if(extension.equals(".wav")) {
+                keyedResources.put(file, new SoundEngine.Sound(file));
             } else {
                 T resource = null;
 
