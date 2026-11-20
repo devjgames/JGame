@@ -61,11 +61,14 @@ public class GameSystem {
     private boolean down = false;
     private boolean captured = false;
     private boolean updateValueText = false;
+    private int fsScale = 2;
 
     public GameSystem(String sceneName, boolean inDesign, boolean uiEnabled, GameComponent ... factories) throws Exception {
         this.inDesign = inDesign;
 
         game = Game.getInstance();
+
+        setFullscreenScale(2);
 
         ui = createUI(getFont());
 
@@ -94,6 +97,10 @@ public class GameSystem {
             sceneIndex = selectedScene;
             load();
         }
+    }
+
+    public final void setFullscreenScale(int scale) {
+        fsScale = scale * game.getScale();
     }
 
     public final int x() {
@@ -219,7 +226,11 @@ public class GameSystem {
 
         int lightCount = Math.min(BasicRenderer.MAX_LIGHTS, lights.size());
 
-        renderer.begin(w(), h(), backgroundColor);
+        if(game.isFullscreen() && !inDesign) {
+            renderer.begin(game.getFrameWidth() / fsScale, game.getFrameHeight() / fsScale, backgroundColor);
+        } else {
+            renderer.begin(w(), h(), backgroundColor);
+        }
         renderer.setProjection(projection);
         renderer.setView(view);
         renderer.setLightCount(lightCount);
@@ -250,7 +261,6 @@ public class GameSystem {
         postProcess(renderer);
 
         GFX.clear(UIColors.BACKGROUND);
-
         GFX.setViewport(x(), y(), w(), h());
 
         GFX.setDepthState(DepthState.NONE);
@@ -506,9 +516,14 @@ public class GameSystem {
                         node.position.y = Math.round(node.position.y / s) * s;
                         node.position.z = Math.round(node.position.z / s) * s;
                     } else if(mode == PANXZ || mode == PANY) {
+                        float dx = eye.x - target.x;
+                        float dy = eye.y - target.y;
+                        float dz = eye.z - target.z;
+
                         target.x = Math.round(target.x / s) * s;
                         target.y = Math.round(target.y / s) * s;
                         target.z = Math.round(target.z / s) * s;
+                        target.add(dx, dy, dz, eye);
                     }
                 }
                 down = false;

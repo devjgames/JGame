@@ -20,7 +20,6 @@ public class Main {
                 new Axis(),
                 new Player()
             );
-
             game.resetTimer();
 
             while(game.beginFrame()) {

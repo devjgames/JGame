@@ -95,7 +95,7 @@ public class Player extends Model {
             "TRI = " + basicRenderer.getTrianglesRendered() + "\n" +
             "TST = " + collider.getTested() + "\n" +
             "POS = " + (int)gs.eye.x + ", " + (int)gs.eye.y + ", " + (int)gs.eye.z + "\n",
-            16, 10, 12, s, 5, 10 * s, 10 * s, 1, 1, 0, 1, 1, 0.5f, 0, 1
+            16, 10, 12, s * 2, 5, 10 * s, 10 * s, 1, 1, 0, 1, 1, 0.5f, 0, 1
         );
         spriteRenderer.end();
     }
